@@ -1,0 +1,15 @@
+Yubikey Module for NodeJS
+
+Validate Yubikeys via Yubico Web Services API.
+
+Yubico API Ids and Keys can be requested from https://upgrade.yubico.com/getapikey/
+
+Example usage:
+
+      var yubikey = require(./yubikey.js);
+      yubikey.apiId = 1234;
+      yubikey.apiKey = 'asdfasdf';
+      
+      yubikey.verify('cccccccedjcrkjftthlbkgnhnugvbhidjleuddbghhnl', function(isValid) {
+            console.log(isValid ? 'Yubikey is valid' : 'Yubikey is not valid');
+      })
