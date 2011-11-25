@@ -49,7 +49,7 @@
  */
 
 
-var http = require('https'),
+var https = require('https'),
 	crypto = require('crypto'),
 	querystring = require('querystring');
 
