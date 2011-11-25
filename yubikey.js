@@ -49,7 +49,7 @@
  */
 
 
-var http = require('http'),
+var http = require('https'),
 	crypto = require('crypto'),
 	querystring = require('querystring');
 
@@ -107,29 +107,20 @@ function sendRequest(host, vars, callback) {
 	
 	if(debug || exports.debug) console.log('Request: ' + host + query);
 	
-	var yubikeyVerify = http.createClient(443, host, true);
-	var request = yubikeyVerify.request('GET', query, {'host': host});
-	request.end();
-	
-	request.on('response', function (response) {
-		if(response.statusCode === 200) {
-			response.setEncoding('utf8');
-			response.on('data', function (data) {
-				if(debug || exports.debug) console.log('Response: ' + data);
-				responseVars = querystring.parse(data.replace(/\r\n/g, '&'));
-				verifyResponse(responseVars, vars, callback);
-		  });
-		} else {
-			nextRequest(vars, callback);
-		}
-	});
-	
-	request.on('error', function (err) {
-		nextRequest(vars, callback, err);
-	});
-	yubikeyVerify.on('error', function (err) {
-		nextRequest(vars, callback, err);
-	});
+     var request = https.get({host: host, path: query}, function(response) {
+         if(response.statusCode === 200) {
+            response.setEncoding('utf8');
+            response.on('data', function (data) {
+                if(debug || exports.debug) console.log('Response: ' + data);
+                responseVars = querystring.parse(data.replace(/\r\n/g, '&'));
+                verifyResponse(responseVars, vars, callback);
+         });
+         } else {
+            nextRequest(vars, callback);
+         }
+     }).on('error', function(err) {
+         nextRequest(vars, callback, err);
+     });
 }
 
 function nextRequest(vars, callback, err) {
