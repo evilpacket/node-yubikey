@@ -197,7 +197,9 @@ function orderedStringify(vars) {
 
 	// Yubikey requires query strings are in alphabetical order for the signature
 	Object.keys(vars).sort().forEach(function(key){
-		query.push(key + '=' + vars[key]);
+        if(key != "") {
+		    query.push(key + '=' + vars[key]);
+        }
 	})
 	
 	return query.join('&');
