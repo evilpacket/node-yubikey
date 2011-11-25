@@ -90,7 +90,7 @@ var verify = exports.verify = function(otp, callback, config) {
 	
 	var vars = {};
 
-	vars.nonce = crypto.createHash('md5').update(Math.round(Math.random() * 1e50) + (new Date*1)).digest('hex');
+	vars.nonce = crypto.createHash('md5').update((Math.round(Math.random() * 1e50) + (new Date*1)).toString()).digest('hex');
 	vars.otp = otp;
 	vars['id'] = apiId;
 	
